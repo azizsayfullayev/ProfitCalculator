@@ -70,4 +70,4 @@ def calculate_profit_by_date(csv_path):
     print(tabulate(table_rows, headers=headers, tablefmt='grid'))
 
 # Example usage, replace 'path_to_your_file.csv' with your actual CSV file path
-calculate_profit_by_date(r"C:\Users\a.sayfullayev\Downloads\closed_positions_08_05_2024, 17_44_05.csv")
+calculate_profit_by_date(r"")
