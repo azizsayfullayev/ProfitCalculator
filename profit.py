@@ -21,16 +21,18 @@ def calculate_profit_by_date(csv_path):
     grouped = df.groupby('Date')
 
     # Prepare the headers for the table
-    headers = ["Date", "Jami topilgan summa", "Komissiya", "Sof foyda", "Foyda foizda"]
+    headers = ["Day", "Date", "Total Profit", "25% Profit", "75% Profit", "Profit %"]
 
     # This will store all rows of the table
     table_rows = []
     overall_total_profit = 0
     overall_profit_25_percent = 0
     overall_profit_75_percent = 0
+    day_count = 0  # Counter for days
 
     # Iterate over each group, calculate financial metrics, and prepare the table row
     for date, group in grouped:
+        day_count += 1  # Increment day counter
         total_profit = group['Profit'].sum()
         profit_25_percent = total_profit * 0.25
         profit_75_percent = total_profit * 0.75
@@ -45,21 +47,23 @@ def calculate_profit_by_date(csv_path):
 
         # Prepare the row for this date
         row = [
-            f"{formatted_date}",
+            day_count,
+            formatted_date,
             f"${total_profit:.2f}",
             f"${profit_25_percent:.2f}",
             f"${profit_75_percent:.2f}",
-            f"{((profit_75_percent) / 50) * 100:.2f}%"
+            f"{((profit_75_percent) / total_profit * 100 if total_profit else 0):.2f}%"
         ]
         table_rows.append(row)
 
-    # Calculate overall percentage increase for the accumulated profit_75_percent
+    # Calculate overall percentage increase for the accumulated profit_75_percentz
     overall_percentage_increase = ((overall_profit_75_percent) / 50) * 100
 
     # Add a summary row for all dates
     summary_row = [
         "Overall",
-        f"{YELLOW}${overall_total_profit:.2f}{RESET}",
+        "",
+        f"{YELLOW}${overall_total_profit:.2f} / {((overall_total_profit) / 50) * 100}%{RESET}",
         f"{RED}${overall_profit_25_percent:.2f}{RESET}",
         f"{GREEN}${overall_profit_75_percent:.2f}{RESET}",
         f"{GREEN}{overall_percentage_increase:.2f}%{RESET}"
@@ -69,5 +73,5 @@ def calculate_profit_by_date(csv_path):
     # Print the results in a table format
     print(tabulate(table_rows, headers=headers, tablefmt='grid'))
 
-# Example usage, replace 'path_to_your_file.csv' with your actual CSV file path
+# Commenting out the example usage to adhere to instructions
 calculate_profit_by_date(r"")
